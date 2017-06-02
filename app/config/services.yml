@@ -1,0 +1,20 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+services:
+    cache_lite:
+        class: DashboardBundle\Services\CacheLiteService
+        arguments: ["%life_time%"]
+
+    memcache:
+        class: DashboardBundle\Repository\MemcacheMessageRepository
+        arguments: ['@cache_lite']
+
+    add_message:
+        class: DashboardBundle\Services\AddMessageService
+        arguments: ["@memcache", "@event_dispatcher", "@doctrine.orm.entity_manager"]
+
+    ms_listener:
+        class: DashboardBundle\Listener\MessageListener
+        arguments: ["@request_stack"]
+        tags:
+            - { name: kernel.event_listener, event: message.added, method: historyAction }

@@ -1,0 +1,32 @@
+{% extends "@Dashboard/Default/base.html.twig" %}
+
+{% block title %}List of messages{% endblock %}
+
+{% block body %}
+    <h2 class="page-header">List of messages</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Message</th>
+            <th>Created at</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for message in messages %}
+            <tr>
+                <th scope="row">{{ message.id }}</th>
+                <td>{{ message.email }}</td>
+                <td>{{ message.username }}</td>
+                <td>{{ message.message }}</td>
+                <td>{{ message.createdAt|date('F j, Y, g:i a') }}</td>
+                <th>
+                    <a href="{{ path('deleteAction',{'id': message.id}) }}" class="btn btn-danger">Delete</a></th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
